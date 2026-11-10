@@ -3,18 +3,19 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
+import { RolesGuard } from './roles.guard';
 
 @Module({
   imports: [
-    PrismaModule, // So AuthService can talk to the database
+    PrismaModule,
     JwtModule.register({
-      // Read the secret from our .env file securely!
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '7d' }, // Wristband expires in 7 days
+      signOptions: { expiresIn: '7d' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService], // So other modules can use it later if needed
+  providers: [AuthService, JwtStrategy, RolesGuard], // 👈 Added the strategy and guard
+  exports: [AuthService],
 })
 export class AuthModule {}
