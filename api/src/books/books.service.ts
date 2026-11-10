@@ -1,15 +1,21 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateBookDto } from './dto/create-book.dto';
 
 @Injectable()
 export class BooksService {
-  // Nest will automatically hand us the PrismaService here!
   constructor(private prisma: PrismaService) {}
 
-  // This method fetches all books from the database
-  async findAll() {
+  findAll() {
     return this.prisma.book.findMany({
-      include: { genre: true }, // This also fetches the genre details for each book!
+      include: { genre: true, reviews: true },
+    });
+  }
+
+  // ADDED THIS METHOD
+  create(dto: CreateBookDto) {
+    return this.prisma.book.create({
+      data: dto,
     });
   }
 }

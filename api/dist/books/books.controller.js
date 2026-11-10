@@ -8,17 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BooksController = void 0;
 const common_1 = require("@nestjs/common");
 const books_service_1 = require("./books.service");
+const create_book_dto_1 = require("./dto/create-book.dto");
+const roles_guard_1 = require("../auth/roles.guard");
+const roles_decorator_1 = require("../auth/roles.decorator");
+const passport_1 = require("@nestjs/passport");
 let BooksController = class BooksController {
     booksService;
     constructor(booksService) {
         this.booksService = booksService;
     }
-    async findAll() {
+    findAll() {
         return this.booksService.findAll();
+    }
+    create(dto) {
+        return this.booksService.create(dto);
     }
 };
 exports.BooksController = BooksController;
@@ -26,10 +36,19 @@ __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], BooksController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Post)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('LIBRARIAN'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_book_dto_1.CreateBookDto]),
+    __metadata("design:returntype", void 0)
+], BooksController.prototype, "create", null);
 exports.BooksController = BooksController = __decorate([
-    (0, common_1.Controller)("books"),
+    (0, common_1.Controller)('books'),
     __metadata("design:paramtypes", [books_service_1.BooksService])
 ], BooksController);
 //# sourceMappingURL=books.controller.js.map

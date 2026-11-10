@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto'; // Make sure this path matches your DTO location
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // We will create this shortcut next, but for now let's use the raw guards
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 

@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { PrismaClient, Role } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -153,17 +154,18 @@ async function main() {
   });
   console.log(`✅ Created 15 books`);
 
-  // 3. Create Users with Roles
-  await prisma.user.createMany({
-    data: [
-      { email: "alice@example.com", name: "Alice Johnson", role: "PATRON" },
-      { email: "bob@example.com", name: "Bob Smith", role: "PATRON" },
-      // This is our VIP Librarian for testing
-      { email: "librarian@example.com", name: "Ms. Dewey", role: "LIBRARIAN" },
-    ],
+    // 3. Create Users with Hashed Passwords
+  await prisma.user.create({
+    data: { email: 'alice@example.com', name: 'Alice Johnson', role: 'PATRON', password: await bcrypt.hash('password123', 10) },
   });
-  console.log(`✅ Created 3 users (including 1 Librarian)`);
-
+  await prisma.user.create({
+    data: { email: 'bob@example.com', name: 'Bob Smith', role: 'PATRON', password: await bcrypt.hash('password123', 10) },
+  });
+  await prisma.user.create({
+    data: { email: 'librarian@example.com', name: 'Ms. Dewey', role: 'LIBRARIAN', password: await bcrypt.hash('librarian123', 10) }, // 👈 Our VIP
+  });
+  console.log(`✅ Created 3 users with hashed passwords`);
+  
   // 4. Create Reviews (Stretch Goal)
   const gatsby = await prisma.book.findFirst({
     where: { title: "The Great Gatsby" },

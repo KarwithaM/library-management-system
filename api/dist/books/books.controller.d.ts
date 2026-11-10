@@ -1,21 +1,39 @@
-import { BooksService } from "./books.service";
+import { BooksService } from './books.service';
+import { CreateBookDto } from './dto/create-book.dto';
 export declare class BooksController {
     private booksService;
     constructor(booksService: BooksService);
-    findAll(): Promise<({
+    findAll(): import(".prisma/client").Prisma.PrismaPromise<({
         genre: {
             id: number;
             name: string;
             slug: string;
         };
+        reviews: {
+            id: number;
+            userId: number;
+            rating: number;
+            comment: string;
+            bookId: number;
+        }[];
     } & {
-        id: number;
         title: string;
         author: string;
         isbn: string;
         totalCopies: number;
-        availableCopies: number;
         genreId: number;
+        id: number;
+        availableCopies: number;
         userId: number | null;
     })[]>;
+    create(dto: CreateBookDto): import(".prisma/client").Prisma.Prisma__BookClient<{
+        title: string;
+        author: string;
+        isbn: string;
+        totalCopies: number;
+        genreId: number;
+        id: number;
+        availableCopies: number;
+        userId: number | null;
+    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }

@@ -17,9 +17,14 @@ let BooksService = class BooksService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll() {
+    findAll() {
         return this.prisma.book.findMany({
-            include: { genre: true },
+            include: { genre: true, reviews: true },
+        });
+    }
+    create(dto) {
+        return this.prisma.book.create({
+            data: dto,
         });
     }
 };
