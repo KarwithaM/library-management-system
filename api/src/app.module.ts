@@ -6,20 +6,22 @@ import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { GenresModule } from './genres/genres.module'; // 👈 1. IMPORT IT HERE
 
 @Module({
   imports: [
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 60000, // 👈 60,000 MILLISECONDS (60 seconds)
-          limit: 2,   // 2 requests per 60 seconds
+          ttl: 60000, 
+          limit: 2,   
         },
       ],
     }),
     BooksModule,
     PrismaModule,
     AuthModule,
+    GenresModule, // 👈 2. ADD IT TO THE IMPORTS ARRAY HERE
   ],
   controllers: [AppController],
   providers: [
