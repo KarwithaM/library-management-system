@@ -59,3 +59,9 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 node_modules/
 api/node_modules/
+.agents/
+.claude/
+.cursor/
+.devin/
+api/dist/
+api/AGENTS.md
