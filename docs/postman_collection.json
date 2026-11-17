@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "Library Management System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        { "name": "Register", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] } } },
+        { "name": "Login", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] } } }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        { "name": "Get All Books", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/books?page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["books"], "query": [{"key": "page", "value": "1"}, {"key": "limit", "value": "10"}] } } },
+        { "name": "Create Book", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/books", "host": ["{{baseUrl}}"], "path": ["books"] } } },
+        { "name": "Update Book", "request": { "method": "PATCH", "url": { "raw": "{{baseUrl}}/books/:id", "host": ["{{baseUrl}}"], "path": ["books", ":id"] } } },
+        { "name": "Delete Book", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/books/:id", "host": ["{{baseUrl}}"], "path": ["books", ":id"] } } }
+      ]
+    },
+    {
+      "name": "Genres",
+      "item": [
+        { "name": "Get All Genres", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/genres", "host": ["{{baseUrl}}"], "path": ["genres"] } } },
+        { "name": "Create Genre", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/genres", "host": ["{{baseUrl}}"], "path": ["genres"] } } }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "Get User Profile", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/users/profile", "host": ["{{baseUrl}}"], "path": ["users", "profile"] } } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ]
+}

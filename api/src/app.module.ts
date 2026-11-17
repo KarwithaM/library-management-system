@@ -6,7 +6,8 @@ import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { GenresModule } from './genres/genres.module'; // 👈 1. IMPORT IT HERE
+import { GenresModule } from './genres/genres.module';
+import { UsersModule } from './users/users.module'; // 👈 1. IMPORT IT HERE
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { GenresModule } from './genres/genres.module'; // 👈 1. IMPORT IT HERE
     BooksModule,
     PrismaModule,
     AuthModule,
-    GenresModule, // 👈 2. ADD IT TO THE IMPORTS ARRAY HERE
+    GenresModule,
+    UsersModule, // 👈 2. ADD IT TO THE IMPORTS ARRAY HERE
   ],
   controllers: [AppController],
   providers: [
