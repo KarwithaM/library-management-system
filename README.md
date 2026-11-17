@@ -142,3 +142,42 @@ By using a foreign key, we ensure **data normalization**. If we ever need to ren
 ### Prisma vs. Document Database Modeling (Stretch Goal)
 
 Modeling in Prisma (which targets relational databases like PostgreSQL) feels different from modeling in a document database (like MongoDB). In a document database, you might "embed" the genre directly inside the book document to make read operations faster, accepting some data duplication. With Prisma/PostgreSQL, the focus is on strict relationships, data integrity, and avoiding duplication through foreign keys and joins. Prisma's type-safe client makes navigating these relationships (`book.genre.name`) feel just as easy as accessing embedded data, giving us the best of both worlds.
+
+---
+
+## Week 2: Authentication & Security
+
+This project implements a secure, role-based authentication system using JWT (JSON Web Tokens) and bcrypt password hashing.
+
+### Security Features
+
+- **Password Hashing**: All user passwords are hashed using `bcrypt` before being saved to the database. Plain-text passwords are never stored.
+- **JWT Authentication**: Upon successful login, the server issues a signed JWT. Clients must include this token in the `Authorization: Bearer <token>` header for protected routes.
+- **Role-Based Access Control (RBAC)**: Custom `@Roles('LIBRARIAN')` decorators and a `RolesGuard` ensure that sensitive operations (creating, updating, or deleting books/genres) can only be performed by users with the `LIBRARIAN` role. Patrons are automatically rejected with a `403 Forbidden` error.
+- **Rate Limiting (Stretch Goal)**: The `/auth/login` and `/auth/register` endpoints are protected by `@nestjs/throttler` to prevent brute-force attacks (limited to 2 requests per 60 seconds).
+- **Global Validation**: A global `ValidationPipe` with `whitelist: true` ensures that any undeclared or malicious fields in request bodies are automatically stripped out.
+
+### API Endpoints Overview
+
+_(A full Postman collection is available in `docs/postman_collection.json`)_
+
+| Method   | Endpoint         | Description                                                       | Auth Required | Role Required |
+| -------- | ---------------- | ----------------------------------------------------------------- | ------------- | ------------- |
+| `POST`   | `/auth/register` | Create a new user account                                         | No            | None          |
+| `POST`   | `/auth/login`    | Authenticate and receive a JWT                                    | No            | None          |
+| `GET`    | `/users/profile` | Get the authenticated user's profile                              | Yes (JWT)     | Any           |
+| `GET`    | `/books`         | Get all books (supports `?search`, `?genreId`, `?page`, `?limit`) | No            | None          |
+| `POST`   | `/books`         | Create a new book                                                 | Yes (JWT)     | `LIBRARIAN`   |
+| `PATCH`  | `/books/:id`     | Update an existing book                                           | Yes (JWT)     | `LIBRARIAN`   |
+| `DELETE` | `/books/:id`     | Delete a book                                                     | Yes (JWT)     | `LIBRARIAN`   |
+| `GET`    | `/genres`        | Get all genres                                                    | No            | None          |
+| `POST`   | `/genres`        | Create a new genre                                                | Yes (JWT)     | `LIBRARIAN`   |
+
+### Environment Variables
+
+Ensure your `.env` file contains the following:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public&pgbouncer=true"
+JWT_SECRET="your-super-secret-jwt-key-here"
+```
