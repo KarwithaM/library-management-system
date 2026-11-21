@@ -9,6 +9,7 @@ function HomePage() {
   
   const [searchQuery, setSearchQuery] = useState("");
   const [genreFilter, setGenreFilter] = useState("");
+  const [sortBy, setSortBy] = useState("title"); // 👈 ADD THIS sortBy state
 
   useEffect(() => {
     setLoading(true);
@@ -26,14 +27,23 @@ function HomePage() {
     axios.get(url)
       .then((response) => {
         console.log("✅ Received books:", response.data); // 👈 Debug log
-        setBooks(response.data);
+        let sortedBooks = response.data;
+    
+    // 👇 ADD THIS SORTING LOGIC
+        if (sortBy === 'title') {
+            sortedBooks.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortBy === 'author') {
+            sortedBooks.sort((a, b) => a.author.localeCompare(b.author));
+        }
+        
+        setBooks(sortedBooks);
       })
       .catch((error) => {
         console.error("❌ Failed to fetch books:", error);
       })
       .finally(() => setLoading(false));
       
-  }, [searchQuery, genreFilter]);
+  }, [searchQuery, genreFilter, sortBy]);
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -55,6 +65,15 @@ function HomePage() {
           <option value="27">Science</option>
           <option value="28">History</option>
           <option value="29">Technology</option>
+        </select>
+
+        <select 
+          value={sortBy} 
+          onChange={(e) => setSortBy(e.target.value)}
+          className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        >
+          <option value="title">Sort by Title</option>
+          <option value="author">Sort by Author</option>
         </select>
       </div>
 
