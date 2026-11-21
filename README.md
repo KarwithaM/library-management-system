@@ -181,3 +181,32 @@ Ensure your `.env` file contains the following:
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public&pgbouncer=true"
 JWT_SECRET="your-super-secret-jwt-key-here"
 ```
+
+---
+
+## Week 3: React Frontend & Catalog UI
+
+This week, we built a responsive, interactive frontend using React and Vite to consume the NestJS API. The UI is styled with Tailwind CSS and features a seamless, single-page application experience.
+
+### Frontend Features
+
+- **Responsive Book Grid**: Displays books in a clean, responsive grid using a reusable `BookCard` component.
+- **Dynamic Routing**: Clicking a book navigates to a dedicated detail page (`/books/:id`) using `react-router-dom` without full page reloads.
+- **Debounced Live Search**: A custom `SearchBar` component uses `useEffect` cleanup to delay API calls until the user stops typing (400ms), preventing server spam.
+- **Genre Filtering & Sorting**: Users can filter books by genre or sort them alphabetically by title/author.
+- **Skeleton Loading UI (Stretch Goal)**: Instead of a plain text spinner, the app displays animated skeleton placeholders while data is fetching.
+- **Robust State Handling**: Gracefully handles loading, error, and empty (no results found) states.
+
+### React Architecture
+
+- **Lifting State Up**: The `HomePage` component acts as the source of truth for `searchQuery`, `genreFilter`, and `sortBy`, passing them down as props to the `BookGrid`.
+- **Environment Variables**: The backend URL is securely managed via `VITE_API_URL` in the client `.env` file.
+- **Component Composition**: The app is broken down into small, focused components (`SearchBar`, `BookGrid`, `BookCard`, `BookDetail`) for maintainability.
+
+### Client Environment Variables
+
+Ensure your `client/.env` file contains:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
