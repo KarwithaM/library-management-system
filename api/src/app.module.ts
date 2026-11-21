@@ -15,7 +15,7 @@ import { UsersModule } from './users/users.module'; // 👈 1. IMPORT IT HERE
       throttlers: [
         {
           ttl: 60000, 
-          limit: 2,   
+          limit: 100,   
         },
       ],
     }),
